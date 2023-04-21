@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:campus_connect/functions/function.dart';
 import 'package:campus_connect/pages/register.dart' as register;
+import 'package:dropdown_button2/dropdown_button2.dart';
+
 
 // final TextEditingController email = TextEditingController();
 final TextEditingController id = TextEditingController();
@@ -17,6 +19,14 @@ final TextEditingController gender = TextEditingController();
 
 class DetailsPage extends StatelessWidget {
   // const MyApp({Key? key}) : super(key: key);
+final List<String> residenceDropdown = [
+  'on campus',
+  'off campus'
+];
+final List<String> genderDropdown = [
+  'M',
+  'F'
+];
 
   @override
   Widget build(BuildContext context) {
@@ -399,10 +409,11 @@ class DetailsPage extends StatelessWidget {
                                         "Firstname": register.firstname.text,
                                         "Lastname": register.lastname.text,
                                         "Major": major.text,
+                                        "Gender": gender.text,
                                         "YearGroup": yearGroup.text,
-                                        "Campus Residence": residence.text,
-                                        "Favorite Movie": favoriteMovie.text,
-                                        "Favorite Food": favoriteFood.text,
+                                        "CampusResidence": residence.text,
+                                        "FavoriteMovie": favoriteMovie.text,
+                                        "FavoriteFood": favoriteFood.text,
 
                                       });
                                     },

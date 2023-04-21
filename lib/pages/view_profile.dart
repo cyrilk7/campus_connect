@@ -1,45 +1,478 @@
+import 'package:campus_connect/pages/sign_up.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../functions/function.dart';
+import '../providers/provider.dart';
+import 'feed.dart';
+
+// String name = "";
+// String major = "";
+// String residence = "";
+// String DOB = "";
+// String food = "";
+// String movie = "";
+// String id = "";
+// String yearGroup = "";
+String email = "";
+// String gender = "";
+
+final TextEditingController c_DOB = TextEditingController();
+final TextEditingController c_lastname = TextEditingController();
+final TextEditingController c_major = TextEditingController();
+final TextEditingController c_yearGroup = TextEditingController();
+final TextEditingController c_residence = TextEditingController();
+final TextEditingController c_favoriteMovie = TextEditingController();
+final TextEditingController c_favoriteFood = TextEditingController();
+final TextEditingController c_gender = TextEditingController();
+final TextEditingController c_firstname = TextEditingController();
+final TextEditingController c_id = TextEditingController();
+final TextEditingController c_email = TextEditingController();
 
 class ViewProfilePage extends StatelessWidget {
   const ViewProfilePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    String firstname = Provider.of<MyProvider>(context, listen: false).temp_firstname;
+    String id = Provider.of<MyProvider>(context, listen: false).temp_ID;
+
+    String lastname = Provider.of<MyProvider>(context, listen: false).temp_lastname;
+    String email = Provider.of<MyProvider>(context, listen: false).temp_mail;
+    String major = Provider.of<MyProvider>(context, listen: false).temp_major;
+    String gender = Provider.of<MyProvider>(context, listen: false).temp_gender;
+    String DOB = Provider.of<MyProvider>(context, listen: false).temp_DOB;
+    String yearGroup = Provider.of<MyProvider>(context, listen: false).temp_year;
+    String residence = Provider.of<MyProvider>(context, listen: false).temp_residence;
+    String favMovie = Provider.of<MyProvider>(context, listen: false).temp_movie;
+    String favFood = Provider.of<MyProvider>(context, listen: false).temp_food;
+
+    // Future<Map<String, dynamic>> userData = getDetails(context, email);
+    //
+    // userData.then((value) {
+    //   c_gender.text = value['Gender'];
+    //   c_major.text = value['Major'];
+    //   c_residence.text = value['Campus Residence'];
+    //   c_favoriteFood.text = value['Favorite Food'];
+    //   c_favoriteMovie.text = value['Favorite Movie'];
+    //   c_DOB.text = value['DOB'];
+    //   c_yearGroup.text = value['YearGroup'];
+    // });
+
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(
-          // backgroundColor: Colors.blueAccent,
-          title: Row(
-            // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        body: Container(
+          child: Row(
             children: [
-              Container(
-                height: 50,
-                width: 50,
-                margin: EdgeInsets.only(right: 20),
-                child: const Image(
-                  color: Colors.orange,
-                  image: AssetImage('images/sign_in_logo.png'),
-                  fit: BoxFit.contain,
-                  height: kToolbarHeight * 1.1,
-                ),
-              ),
-              const Text(
-                "Campus Connect",
-                style: TextStyle(
-                  fontWeight: FontWeight.w800,
-                  fontSize: 20,
-                ),
-              ),
-              Center(
-                child: Center(
-                  child: Container(
-                    margin: EdgeInsets.only(left: 300),
-                    child: Text(
-                      'Hello Buzzer!',
-                      style: TextStyle(
+              Expanded(
+                flex: 2,
+                child: Container(
+                  color: Colors.blueAccent,
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: 30,
+                      ),
+                      Image.asset("images/sign_in_logo.png"),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Text(
+                        "Hi " + firstname + "!",
+                        textAlign: TextAlign.left,
+                        style: TextStyle(
                           fontSize: 20,
+                          fontWeight: FontWeight.bold,
                           color: Colors.white,
-                          fontWeight: FontWeight.w800),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      const Text(
+                        "Here are some stats",
+                        textAlign: TextAlign.left,
+                        style: TextStyle(
+                          fontSize: 17,
+                          // fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Column(
+                            children: const [
+                              Text(
+                                "112",
+                                style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white),
+                              ),
+                              Text(
+                                "Posts",
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            width: 30,
+                          ),
+                          Column(
+                            // mainAxisAlignment: MainAxisAlignment.center,
+                            children: const [
+                              Text(
+                                "177",
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              Text(
+                                "Followers",
+                                style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white),
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 30,
+                      ),
+                      Container(
+                        height: 50,
+                        width: 100,
+                        color: Color.fromRGBO(245, 245, 245, 255),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => FeedPage()));
+                        },
+                        child: Container(
+                          margin: EdgeInsets.only(left: 30),
+                          child: Row(
+                            children: const [
+                              Icon(
+                                Icons.home,
+                                color: Colors.white,
+                                size: 30,
+                              ),
+                              SizedBox(
+                                width: 20,
+                              ),
+                              Text(
+                                "Home",
+                                style: TextStyle(
+                                    fontSize: 15, color: Colors.white),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ViewProfilePage()));
+                        },
+                        child: Container(
+                          margin: EdgeInsets.only(left: 30),
+                          child: Row(
+                            children: const [
+                              Icon(
+                                Icons.person,
+                                color: Colors.white,
+                                size: 30,
+                              ),
+                              SizedBox(
+                                width: 20,
+                              ),
+                              Text(
+                                "Profile",
+                                style: TextStyle(
+                                    fontSize: 15, color: Colors.white),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      GestureDetector(
+                        child: Container(
+                          margin: EdgeInsets.only(left: 30),
+                          child: Row(
+                            children: const [
+                              Icon(
+                                Icons.logout,
+                                color: Colors.white,
+                                size: 30,
+                              ),
+                              SizedBox(
+                                width: 20,
+                              ),
+                              Text(
+                                "Logout",
+                                style: TextStyle(
+                                    fontSize: 15, color: Colors.white),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      // const Text(
+                      //   "Let's get you all signed up!",
+                      //   textAlign: TextAlign.left,
+                      //   style: TextStyle(
+                      //     fontSize: 17,
+                      //     fontWeight: FontWeight.bold,
+                      //     color: Color.fromARGB(109, 0, 0, 0),
+                      //   ),
+                      // ),
+                    ],
+                  ),
+                ),
+              ),
+              Expanded(
+                flex: 6,
+                child: Container(
+                  color: Color.fromRGBO(37, 150, 190, 255),
+                  child: Container(
+                    margin: EdgeInsets.only(top: 70),
+                    child: Column(
+                      children: [
+                        Container(
+                          margin: EdgeInsets.only(left: 70),
+                          child: Row(children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: const [
+                                Text(
+                                  "Date of Birth: ",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20,
+                                      color: Colors.blueAccent),
+                                ),
+                                SizedBox(
+                                  height: 20,
+                                ),
+                                Text(
+                                  "Gender: ",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20,
+                                      color: Colors.blueAccent),
+                                ),
+                                SizedBox(
+                                  height: 20,
+                                ),
+                                Text(
+                                  "Major: ",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20,
+                                      color: Colors.blueAccent),
+                                ),
+                                SizedBox(
+                                  height: 20,
+                                ),
+                                Text(
+                                  "Year Group: ",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20,
+                                      color: Colors.blueAccent),
+                                ),
+                                SizedBox(
+                                  height: 20,
+                                ),
+                                Text(
+                                  "Residence: ",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20,
+                                      color: Colors.blueAccent
+                                  ),
+                                ),
+                                SizedBox(height: 20,),
+                                Text(
+                                  "Favorite Food: ",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20,
+                                      color: Colors.blueAccent
+                                  ),
+                                ),
+                                SizedBox(height: 20,),
+                                Text(
+                                  "Favorite Movie: ",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20,
+                                      color: Colors.blueAccent
+                                  ),
+                                ),
+                                SizedBox(height: 20,),
+
+                              ],
+                            ),
+                            SizedBox(width: 50,),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  DOB,
+                                  style: TextStyle(
+                                      // fontWeight: FontWeight.bold,
+                                      fontSize: 20,
+                                      color: Colors.black),
+                                ),
+                                SizedBox(
+                                  height: 20,
+                                ),
+                                Text(
+                                  gender,
+                                  style: TextStyle(
+                                      // fontWeight: FontWeight.bold,
+                                      fontSize: 20,
+                                      color: Colors.black),
+                                ),
+                                SizedBox(
+                                  height: 20,
+                                ),
+                                Text(
+                                  major,
+                                  style: TextStyle(
+                                      // fontWeight: FontWeight.bold,
+                                      fontSize: 20,
+                                      color: Colors.black),
+                                ),
+                                SizedBox(
+                                  height: 20,
+                                ),
+                                Text(
+                                  yearGroup,
+                                  style: TextStyle(
+                                      // fontWeight: FontWeight.bold,
+                                      fontSize: 20,
+                                      color: Colors.black
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 20,
+                                ),
+                                Text(
+                                  residence,
+                                  style: TextStyle(
+                                      // fontWeight: FontWeight.bold,
+                                      fontSize: 20,
+                                      color: Colors.black
+                                  ),
+                                ),
+                                SizedBox(height: 20,),
+                                Text(
+                                  favFood,
+                                  style: TextStyle(
+                                      // fontWeight: FontWeight.bold,
+                                      fontSize: 20,
+                                      color: Colors.black
+                                  ),
+                                ),
+                                SizedBox(height: 20,),
+                                Text(
+                                  favMovie,
+                                  style: TextStyle(
+                                      // fontWeight: FontWeight.bold,
+                                      fontSize: 20,
+                                      color: Colors.black
+                                  ),
+                                ),
+                                SizedBox(height: 20,),
+
+                              ],
+                            ),
+                            Container(
+                              // margin: EdgeInsets.only(bottom: 400, left: 100),
+                              child: Column(
+                                children: [
+                                  CircleAvatar(
+                                    backgroundImage: AssetImage("images/profile-img.png"),
+                                    radius: 100,
+                                  ),
+                                  SizedBox(height: 10,),
+                                  Text(
+                                      firstname + " " + lastname,
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 17
+                                    ),
+                                  ),
+                                  SizedBox(height: 10,),
+                                  Text(
+                                    id + "/" + email,
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 17
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            // SizedBox(width: 70,),
+                            GestureDetector(
+                              onTap: (){
+                                Future<Map<String, dynamic>> userData = getDetails(context, email);
+
+                                userData.then((value) {
+                                  c_gender.text = value['Gender'];
+                                  c_major.text = value['Major'];
+                                  c_residence.text = value['Campus Residence'];
+                                  c_favoriteFood.text = value['Favorite Food'];
+                                  c_favoriteMovie.text = value['Favorite Movie'];
+                                  c_DOB.text = value['DOB'];
+                                  c_yearGroup.text = value['YearGroup'];
+                                  c_firstname.text = value["Firstname"];
+                                  c_lastname.text = value["Lastname"];
+                                  c_email.text = value["email"];
+
+                                });
+                                showEditModal(context);
+                              },
+                              child: Container(
+                                margin: EdgeInsets.only(left: 200, bottom: 260),
+                                child: Icon(
+                                  Icons.edit,
+                                  color: Colors.blueAccent,
+                                  size: 30,
+                                ),
+                              ),
+                            )
+                          ],),
+
+                        ),
+                        Divider(height: 100, color: Colors.blueAccent,),
+                      ],
                     ),
                   ),
                 ),
@@ -47,381 +480,288 @@ class ViewProfilePage extends StatelessWidget {
             ],
           ),
         ),
-        body: Row(
-          children: [
-            Expanded(
-              flex: 1,
-              child: Container(
-                color: Colors.white,
+      ),
+    );
+  }
+}
+
+void showEditModal(context) {
+  showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          shape:
+          RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+          child: Container(
+            constraints: BoxConstraints(maxHeight: 500, maxWidth: 500),
+            child: Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: SingleChildScrollView(
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(
-                      height: 20,
-                    ),
-                    CircleAvatar(
-                      backgroundImage: AssetImage("images/profile-img.png"),
-                      radius: 40,
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Text(
-                      "Cyril Kujar",
-                      style: TextStyle(
-                        fontFamily: "Agane",
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.blueAccent,
+                    Center(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Container(
+                              width: 50,
+                              height: 50,
+                              child: Image.asset("images/sign_in_logo.png")),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          const Text(
+                            "Edit Your Profile",
+                            textAlign: TextAlign.left,
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Color.fromARGB(255, 63, 180, 231),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          // const Text(
+                          //   "Let's get you all signed up!",
+                          //   textAlign: TextAlign.left,
+                          //   style: TextStyle(
+                          //     fontSize: 17,
+                          //     fontWeight: FontWeight.bold,
+                          //     color: Color.fromARGB(109, 0, 0, 0),
+                          //   ),
+                          // ),
+                        ],
                       ),
                     ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Text(
-                      "Computer Science Major",
+                    const Text(
+                      "Date of Birth",
                       style: TextStyle(
-                          fontSize: 14,
+                          fontFamily: 'Agane',
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15,
                           color: Color.fromRGBO(154, 144, 144, 2)),
                     ),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    SizedBox(
+                      height: 40,
+                      child: TextFormField(
+                        controller: c_DOB,
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          hintText: 'dd/mm/yy',
+                          hintStyle: TextStyle(
+                              fontFamily: 'Agane',
+                              fontSize: 14,
+                              color: Colors.black26),
+                        ),
+                      ),
+                    ),
                     SizedBox(
                       height: 20,
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Column(
-                          children: const [
-                            Text(
-                              "112",
-                              style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.blueAccent),
-                            ),
-                            Text(
-                              "Posts",
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold,
-                                color: Color.fromRGBO(154, 144, 144, 2),
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          width: 30,
-                        ),
-                        Column(
-                          // mainAxisAlignment: MainAxisAlignment.center,
-                          children: const [
-                            Text(
-                              "177",
-                              style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.blueAccent,
-                              ),
-                            ),
-                            Text(
-                              "Followers",
-                              style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color.fromRGBO(154, 144, 144, 2)),
-                            ),
-                          ],
-                        )
-                      ],
+                    const Text(
+                      "Major",
+                      style: TextStyle(
+                          fontFamily: 'Agane',
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15,
+                          color: Color.fromRGBO(154, 144, 144, 2)),
                     ),
                     const SizedBox(
-                      height: 30,
+                      height: 15,
                     ),
-                    // Container(
-                    //   height: 2,
-                    //   color: Colors.grey,
-                    // ),
-                    Container(
-                      margin: EdgeInsets.only(left: 30, top: 20),
-                      child: Row(
-                        children: const [
-                          Icon(
-                            Icons.home,
-                            color: Colors.blueAccent,
-                            size: 30,
-                          ),
-                          SizedBox(
-                            width: 20,
-                          ),
-                          Text(
-                            "Home",
-                            style: TextStyle(fontSize: 15),
-                          ),
-                        ],
+                    SizedBox(
+                      height: 40,
+                      child: TextFormField(
+                        controller: c_major,
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          hintText: 'Business Administration',
+                          hintStyle: TextStyle(
+                              fontFamily: 'Agane',
+                              fontSize: 14,
+                              color: Colors.black26),
+                        ),
                       ),
                     ),
                     SizedBox(
                       height: 20,
                     ),
-                    Container(
-                      margin: EdgeInsets.only(left: 30),
-                      child: Row(
-                        children: const [
-                          Icon(
-                            Icons.person,
-                            color: Colors.blueAccent,
-                            size: 30,
-                          ),
-                          SizedBox(
-                            width: 20,
-                          ),
-                          Text(
-                            "Profile",
-                            style: TextStyle(fontSize: 15),
-                          ),
-                        ],
+                    const Text(
+                      "Year Group",
+                      style: TextStyle(
+                          fontFamily: 'Agane',
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15,
+                          color: Color.fromRGBO(154, 144, 144, 2)),
+                    ),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    SizedBox(
+                      height: 40,
+                      child: TextFormField(
+                        controller: c_yearGroup,
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          hintText: '2000',
+                          hintStyle: TextStyle(
+                              fontFamily: 'Agane',
+                              fontSize: 14,
+                              color: Colors.black26),
+                        ),
                       ),
                     ),
                     SizedBox(
                       height: 20,
                     ),
-                    Container(
-                      margin: EdgeInsets.only(left: 30),
-                      child: Row(
-                        children: const [
-                          Icon(
-                            Icons.logout,
-                            color: Colors.blueAccent,
-                            size: 30,
+                    const Text(
+                      "Gender",
+                      style: TextStyle(
+                          fontFamily: 'Agane',
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15,
+                          color: Color.fromRGBO(154, 144, 144, 2)),
+                    ),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    SizedBox(
+                      height: 40,
+                      child: TextFormField(
+                        controller: c_gender,
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          hintText: 'Male',
+                          hintStyle: TextStyle(
+                              fontFamily: 'Agane',
+                              fontSize: 14,
+                              color: Colors.black26),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    const Text(
+                      "Campus Residence",
+                      style: TextStyle(
+                          fontFamily: 'Agane',
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15,
+                          color: Color.fromRGBO(154, 144, 144, 2)),
+                    ),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    SizedBox(
+                      height: 40,
+                      child: TextFormField(
+                        controller: c_residence,
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          hintText: 'On-Campus',
+                          hintStyle: TextStyle(
+                              fontFamily: 'Agane',
+                              fontSize: 14,
+                              color: Colors.black26),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    const Text(
+                      "Favorite Food",
+                      style: TextStyle(
+                          fontFamily: 'Agane',
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15,
+                          color: Color.fromRGBO(154, 144, 144, 2)),
+                    ),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    SizedBox(
+                      height: 40,
+                      child: TextFormField(
+                        controller: c_favoriteFood,
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          hintText: 'Rice',
+                          hintStyle: TextStyle(
+                              fontFamily: 'Agane',
+                              fontSize: 14,
+                              color: Colors.black26),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    const Text(
+                      "Favorite Movie",
+                      style: TextStyle(
+                          fontFamily: 'Agane',
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15,
+                          color: Color.fromRGBO(154, 144, 144, 2)),
+                    ),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    SizedBox(
+                      height: 40,
+                      child: TextFormField(
+                        controller: c_favoriteMovie,
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          hintText: 'Creed II',
+                          hintStyle: TextStyle(
+                              fontFamily: 'Agane',
+                              fontSize: 14,
+                              color: Colors.black26),
+                        ),
+                      ),
+                    ),
+                    Center(
+                      child: Padding(
+                        padding: EdgeInsets.only(top: 20),
+                        child: SizedBox(
+                          height: 40,
+                          width: 150,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              editProfile(context, {
+                                "email": c_email.text,
+                                "YearGroup": c_yearGroup.text,
+                                "Major": c_major.text,
+                                "DOB": c_DOB.text,
+                                "Gender": c_gender.text,
+                                "Campus Residence": c_residence.text,
+                                "Favorite Food": c_favoriteFood.text,
+                                // "Favorite Movie": c_favoriteFood.text,
+                              });
+                            },
+                            style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                            ),
+                            child: Text('Edit'),
                           ),
-                          SizedBox(
-                            width: 20,
-                          ),
-                          Text(
-                            "Logout",
-                            style: TextStyle(fontSize: 15),
-                          ),
-                        ],
+                        ),
                       ),
                     ),
                   ],
                 ),
               ),
             ),
-            Expanded(
-              flex: 5,
-              child: Container(
-                  margin: EdgeInsets.only(left: 50, right: 50),
-                  color: Color.fromRGBO(37, 150, 190, 255),
-                  child: Container(
-                    child: Column(
-                      children: [
-                        Container(
-                          margin: EdgeInsets.only(top: 40),
-                          height: 450,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Column(
-                            children: [
-                              Container(
-                                margin: EdgeInsets.only(left: 20, top: 20),
-                                child: Row(
-                                  children: [
-                                    CircleAvatar(
-                                      backgroundImage:
-                                          AssetImage("images/profile-img.png"),
-                                      radius: 30,
-                                    ),
-                                    SizedBox(
-                                      width: 10,
-                                    ),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: const [
-                                        Text(
-                                          "Cyril Kujar",
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 20),
-                                        ),
-                                        SizedBox(
-                                          height: 10,
-                                        ),
-                                        Text(
-                                          "62012024/cyril.kujar@ashesi.edu.gh",
-                                          style: TextStyle(
-                                            fontSize: 14,
-                                            color: Color.fromRGBO(
-                                                154, 144, 144, 2),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Container(
-                                margin: EdgeInsets.only(top: 10, bottom: 10),
-                                color: Colors.grey,
-                                height: 2,
-
-                              ),
-                              Container(
-                                margin: EdgeInsets.only(left: 20, top: 10),
-                                child: Row(
-                                  children: [
-                                    Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: const [
-                                        Text(
-                                          "DOB",
-                                          style: TextStyle(
-                                            fontSize: 17,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.blueAccent,
-                                          ),
-
-                                        ),
-                                        SizedBox(height: 25,),
-                                        Text(
-                                          "Gender",
-                                          style: TextStyle(
-                                            fontSize: 17,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.blueAccent,
-                                          ),
-
-                                        ),
-                                        SizedBox(height: 25,),
-                                        Text(
-                                          "Year Group",
-                                          style: TextStyle(
-                                            fontSize: 17,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.blueAccent,
-                                          ),
-                                        ),
-                                        SizedBox(height: 25,),
-                                        Text(
-                                          "Major",
-                                          style: TextStyle(
-                                            fontSize: 17,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.blueAccent,
-                                          ),
-                                        ),
-                                        SizedBox(height: 25,),
-                                        Text(
-                                          "Residence",
-                                          style: TextStyle(
-                                            fontSize: 17,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.blueAccent,
-                                          ),
-                                        ),
-                                        SizedBox(height: 25,),
-                                        Text(
-                                          "Favorite Food",
-                                          style: TextStyle(
-                                            fontSize: 17,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.blueAccent,
-                                          ),
-                                        ),
-                                        SizedBox(height: 25,),
-                                        Text(
-                                          "Favorite Movie",
-                                          style: TextStyle(
-                                            fontSize: 17,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.blueAccent,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    Container(
-                                      margin: EdgeInsets.only(left: 50),
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: const [
-                                          Text(
-                                            "11/04/88",
-                                            style: TextStyle(
-                                              fontSize: 17,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-
-                                          ),
-                                          SizedBox(height: 25,),
-                                          Text(
-                                            "Male",
-                                            style: TextStyle(
-                                              fontSize: 17,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-
-                                          ),
-                                          SizedBox(height: 25,),
-                                          Text(
-                                            "2024",
-                                            style: TextStyle(
-                                              fontSize: 17,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                          SizedBox(height: 25,),
-                                          Text(
-                                            "Computer Science",
-                                            style: TextStyle(
-                                              fontSize: 17,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                          SizedBox(height: 25,),
-                                          Text(
-                                            "Off-Campus",
-                                            style: TextStyle(
-                                              fontSize: 17,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                          SizedBox(height: 25,),
-                                          Text(
-                                            "Rice",
-                                            style: TextStyle(
-                                              fontSize: 17,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                          SizedBox(height: 25,),
-                                          Text(
-                                            "Creed",
-                                            style: TextStyle(
-                                              fontSize: 17,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-
-                              ),
-                            ],
-
-                          ),
-                        ),
-
-                      ],
-                    ),
-                  )),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
+          ),
+        );
+      });
 }

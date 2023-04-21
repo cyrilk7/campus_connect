@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
 
+import '../functions/function.dart';
+
+TextEditingController mail = TextEditingController();
+TextEditingController pass = TextEditingController();
+String textValue = mail.text;
+
 class LoginPage extends StatelessWidget {
   const LoginPage({Key? key}) : super(key: key);
 
@@ -69,6 +75,7 @@ class LoginPage extends StatelessWidget {
                         width: 350,
                         height: 40,
                         child: TextFormField(
+                          controller: mail,
                           decoration: const InputDecoration(
                             border: OutlineInputBorder()
                           ),
@@ -83,6 +90,7 @@ class LoginPage extends StatelessWidget {
                       const Text(
                         "Password",
                         style: TextStyle(
+
                             fontWeight: FontWeight.bold,
                             color: Color.fromARGB(109, 0, 0, 0)
                         ),),
@@ -91,6 +99,8 @@ class LoginPage extends StatelessWidget {
                         width: 350,
                         height: 40,
                         child: TextFormField(
+                          obscureText: true,
+                          controller: pass,
                           decoration: const InputDecoration(
                               border: OutlineInputBorder()
                           ),
@@ -106,6 +116,10 @@ class LoginPage extends StatelessWidget {
                       child: ElevatedButton(
                         onPressed: () {
                           // Perform some action when the button is pressed
+                          login(context, {
+                            "email": mail.text,
+                            "password": pass.text
+                          });
                         },
                         child: Text('Submit'),
                         style:ElevatedButton.styleFrom(

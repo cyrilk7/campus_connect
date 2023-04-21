@@ -1,10 +1,24 @@
+import 'package:campus_connect/pages/register.dart';
+import 'package:campus_connect/pages/sign_up.dart';
+import 'package:campus_connect/pages/view.dart';
+import 'package:campus_connect/pages/view_profile.dart';
 import 'package:flutter/material.dart';
+import 'package:campus_connect/providers/provider.dart';
+import 'package:provider/provider.dart';
+
+import '../functions/function.dart';
+
+
 
 class FeedPage extends StatelessWidget {
   const FeedPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    String name = Provider.of<MyProvider>(context, listen: false).temp_firstname;
+    String email = Provider.of<MyProvider>(context, listen: false).temp_mail;
+    String major = Provider.of<MyProvider>(context, listen: false).temp_major;
+
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
@@ -36,7 +50,10 @@ class FeedPage extends StatelessWidget {
                     margin: EdgeInsets.only(left: 300),
                     child: Text(
                       'Hello Buzzer!',
-                      style: TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.w800),
+                      style: TextStyle(
+                          fontSize: 20,
+                          color: Colors.white,
+                          fontWeight: FontWeight.w800),
                     ),
                   ),
                 ),
@@ -45,19 +62,22 @@ class FeedPage extends StatelessWidget {
           ),
           actions: [
             Padding(
-              padding: const EdgeInsets.only(right: 80, top: 10, bottom: 10, left: 10),
+              padding: const EdgeInsets.only(
+                  right: 80, top: 10, bottom: 10, left: 10),
               child: Container(
                 margin: EdgeInsets.only(left: 10),
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(20),
-
                 ),
                 width: 300,
                 height: 100,
                 child: Row(
                   children: [
-                    Icon(Icons.search, color: Colors.blueAccent,),
+                    Icon(
+                      Icons.search,
+                      color: Colors.blueAccent,
+                    ),
                     Text(
                       "Search",
                       style: TextStyle(color: Colors.black),
@@ -66,9 +86,43 @@ class FeedPage extends StatelessWidget {
                 ),
               ),
             ),
-            Container()
-            ],
-
+            Container(
+              height: 10.0,
+              width: 100.0,
+              margin: EdgeInsets.only(right: 100, top: 8, bottom: 10.0),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              child: Row(
+                children: [
+                  TextButton(
+                    onPressed: () {
+                      showCreateModal(context);
+                    },
+                    child: Text(
+                      'Create',
+                      style: TextStyle(
+                        color: Colors.blueAccent,
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    style: TextButton.styleFrom(
+                      foregroundColor: Colors.transparent,
+                      primary: Colors.transparent,
+                      elevation: 0,
+                    ),
+                  ),
+                  Icon(
+                    Icons.create,
+                    color: Colors.grey[500],
+                    size: 20,
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
         body: Row(
           children: [
@@ -78,7 +132,9 @@ class FeedPage extends StatelessWidget {
                 color: Colors.white,
                 child: Column(
                   children: [
-                    SizedBox(height: 20,),
+                    SizedBox(
+                      height: 20,
+                    ),
                     CircleAvatar(
                       backgroundImage: AssetImage("images/profile-img.png"),
                       radius: 40,
@@ -87,7 +143,7 @@ class FeedPage extends StatelessWidget {
                       height: 10,
                     ),
                     Text(
-                      "Cyril Kujar",
+                      name,
                       style: TextStyle(
                         fontFamily: "Agane",
                         fontSize: 20,
@@ -99,7 +155,7 @@ class FeedPage extends StatelessWidget {
                       height: 10,
                     ),
                     Text(
-                      "Computer Science Major",
+                      major + " Major",
                       style: TextStyle(
                           fontSize: 14,
                           color: Color.fromRGBO(154, 144, 144, 2)),
@@ -162,63 +218,85 @@ class FeedPage extends StatelessWidget {
                       width: 100,
                       color: Color.fromRGBO(245, 245, 245, 255),
                     ),
-                    Container(
-                      margin: EdgeInsets.only(left: 30),
-                      child: Row(
-                        children: const [
-                          Icon(
-                            Icons.home,
-                            color: Colors.blueAccent,
-                            size: 30,
-                          ),
-                          SizedBox(
-                            width: 20,
-                          ),
-                          Text(
-                            "Home",
-                            style: TextStyle(fontSize: 15),
-                          ),
-                        ],
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => FeedPage()));
+                      },
+                      child: Container(
+                        margin: EdgeInsets.only(left: 30),
+                        child: Row(
+                          children: const [
+                            Icon(
+                              Icons.home,
+                              color: Colors.blueAccent,
+                              size: 30,
+                            ),
+                            SizedBox(
+                              width: 20,
+                            ),
+                            Text(
+                              "Home",
+                              style: TextStyle(fontSize: 15),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                    SizedBox(height: 20,),
-                    Container(
-                      margin: EdgeInsets.only(left: 30),
-                      child: Row(
-                        children: const [
-                          Icon(
-                            Icons.person,
-                            color: Colors.blueAccent,
-                            size: 30,
-                          ),
-                          SizedBox(
-                            width: 20,
-                          ),
-                          Text(
-                            "Profile",
-                            style: TextStyle(fontSize: 15),
-                          ),
-                        ],
+                    SizedBox(
+                      height: 20,
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ViewProfilePage()));
+                      },
+                      child: Container(
+                        margin: EdgeInsets.only(left: 30),
+                        child: Row(
+                          children: const [
+                            Icon(
+                              Icons.person,
+                              color: Colors.blueAccent,
+                              size: 30,
+                            ),
+                            SizedBox(
+                              width: 20,
+                            ),
+                            Text(
+                              "Profile",
+                              style: TextStyle(fontSize: 15),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                    SizedBox(height: 20,),
-                    Container(
-                      margin: EdgeInsets.only(left: 30),
-                      child: Row(
-                        children: const [
-                          Icon(
-                            Icons.logout,
-                            color: Colors.blueAccent,
-                            size: 30,
-                          ),
-                          SizedBox(
-                            width: 20,
-                          ),
-                          Text(
-                            "Logout",
-                            style: TextStyle(fontSize: 15),
-                          ),
-                        ],
+                    SizedBox(
+                      height: 20,
+                    ),
+                    GestureDetector(
+                      child: Container(
+                        margin: EdgeInsets.only(left: 30),
+                        child: Row(
+                          children: const [
+                            Icon(
+                              Icons.logout,
+                              color: Colors.blueAccent,
+                              size: 30,
+                            ),
+                            SizedBox(
+                              width: 20,
+                            ),
+                            Text(
+                              "Logout",
+                              style: TextStyle(fontSize: 15),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ],
@@ -226,92 +304,91 @@ class FeedPage extends StatelessWidget {
               ),
             ),
             Expanded(
-                flex: 5,
-                child: Container(
-                  margin: EdgeInsets.only(left: 50, right: 50),
-                  color: Color.fromRGBO(37, 150, 190, 255),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(height: 40,),
-                      const Text(
-                        "New Activity",
-                        style: TextStyle(
+              flex: 5,
+              child: Container(
+                margin: EdgeInsets.only(left: 50, right: 50),
+                color: Color.fromRGBO(37, 150, 190, 255),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      height: 40,
+                    ),
+                    const Text(
+                      "New Activity",
+                      style: TextStyle(
                           color: Colors.blueAccent,
                           fontSize: 30,
-                          fontWeight: FontWeight.bold
-                        ),
-
-                      ),
-                      SizedBox(height: 20,),
-                      Container(
-                        // width: 100,
-                        height: 200,
-                        decoration: BoxDecoration(
+                          fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Container(
+                      // width: 100,
+                      height: 200,
+                      decoration: BoxDecoration(
                           color: Colors.white,
-                          borderRadius: BorderRadius.circular(10)
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              margin: EdgeInsets.only(left: 20, top: 20),
-                              child: Row(
-                                children: const [
-                                  CircleAvatar(
-                                    backgroundImage: AssetImage("images/profile-img.png"),
-                                    radius: 20,
-                                  ),
-                                  SizedBox(width: 10,),
-                                  Text(
-                                    "Cyril Kujar ",
-                                    style: TextStyle(
+                          borderRadius: BorderRadius.circular(10)),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            margin: EdgeInsets.only(left: 20, top: 20),
+                            child: Row(
+                              children: const [
+                                CircleAvatar(
+                                  backgroundImage:
+                                      AssetImage("images/profile-img.png"),
+                                  radius: 20,
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Text(
+                                  "Cyril Kujar ",
+                                  style: TextStyle(
                                       fontWeight: FontWeight.bold,
-                                      fontSize: 14
-                                    ),
-                                  ),
-                                  Text(
-                                    "made a post",
-                                    style: TextStyle(
-                                        // fontWeight: FontWeight.w100,
-                                        color: Color.fromRGBO(154, 144, 144, 2),
-                                        fontSize: 14
-                                    ),
-                                  ),
-
-                                ],
+                                      fontSize: 14),
+                                ),
+                                Text(
+                                  "made a post",
+                                  style: TextStyle(
+                                      // fontWeight: FontWeight.w100,
+                                      color: Color.fromRGBO(154, 144, 144, 2),
+                                      fontSize: 14),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(left: 20, top: 20),
+                            child: const Text(
+                              "The development of the profile functionalities should follow the REST architectural style."
+                              "That is, there should be appropriate REST APIs at the backend. The development of the profile functionalities should follow the REST architectural style."
+                              "That is, there should be appropriate REST APIs at the backend ",
+                              style: TextStyle(
+                                fontSize: 14,
                               ),
                             ),
-                            Container(
-                              margin: EdgeInsets.only(left: 20, top: 20),
-                              child: const Text(
-                                "The development of the profile functionalities should follow the REST architectural style."
-                                    "That is, there should be appropriate REST APIs at the backend. The development of the profile functionalities should follow the REST architectural style."
-                                    "That is, there should be appropriate REST APIs at the backend ",
-                                style: TextStyle(
-                                  fontSize: 14,
-                                ),
-                              ),
-
-                            )
-                          ],
-                        ),
+                          )
+                        ],
                       ),
-                      SizedBox(height: 20,),
-                      Container(
-                        // width: 100,
-                        height: 200,
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(10)
-                        ),
-                      ),
-
-                    ],
-                  ),
-
-
-                ),)
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Container(
+                      // width: 100,
+                      height: 200,
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10)),
+                    ),
+                  ],
+                ),
+              ),
+            )
           ],
         ),
       ),
