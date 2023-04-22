@@ -2,6 +2,7 @@ import 'package:campus_connect/pages/register.dart';
 import 'package:campus_connect/pages/sign_up.dart';
 import 'package:campus_connect/pages/view.dart';
 import 'package:campus_connect/pages/view_profile.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:campus_connect/providers/provider.dart';
 import 'package:provider/provider.dart';
@@ -9,8 +10,21 @@ import 'package:provider/provider.dart';
 import '../functions/function.dart';
 import 'login.dart';
 
-class FeedPage extends StatelessWidget {
+
+class FeedPage extends StatefulWidget {
   const FeedPage({Key? key}) : super(key: key);
+
+  @override
+  State<FeedPage> createState() => _FeedPageState();
+}
+
+class _FeedPageState extends State<FeedPage> {
+  Stream<QuerySnapshot> stream = FirebaseFirestore.instance.collection("Feed").snapshots();
+  @override
+  void initState(){
+    super.initState();
+    print("feedStream initialized");
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -318,47 +332,66 @@ class FeedPage extends StatelessWidget {
               child: Container(
                 margin: EdgeInsets.only(left: 50, right: 50),
                 color: Color.fromRGBO(37, 150, 190, 255),
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        height: 40,
-                      ),
-                      const Text(
-                        "New Activity",
-                        style: TextStyle(
-                            color: Colors.blueAccent,
-                            fontSize: 30,
-                            fontWeight: FontWeight.bold),
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
+                child: StreamBuilder<QuerySnapshot>(
+                  stream: stream,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasError) {
+                      return Center(
+                          child: Text('Error: ${snapshot.error}')
+                      );
+                    }
+                    if (!snapshot.hasData) {
+                      return const CircularProgressIndicator(
+                        color: Colors.blueAccent,
+                      );
+                    }
+                    final list = snapshot.data!.docs;
 
-                      // SingleChildScrollView(
-                      //   child: Column(
-                      //     children: [
-                      for (var i = 0; i < 5; i++)
-                        getFeed(context, "ABBY OWUSU", "TESTING"),
-                      //     ]
-                      //   ),
-                      // ),
-                      // Container(
-                      //   // width: 100,
-                      //   height: 200,
-                      //   decoration: BoxDecoration(
-                      //       color: Colors.white,
-                      //       borderRadius: BorderRadius.circular(10)),
-                      // ),
-                    ],
-                  ),
-                ),
-              ),
+                    return Expanded(
+                      child: SingleChildScrollView(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(
+                              height: 40,
+                            ),
+                            const Text(
+                              "New Activity",
+                              style: TextStyle(
+                                  color: Colors.blueAccent,
+                                  fontSize: 30,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+
+                            // SingleChildScrollView(
+                            //   child: Column(
+                            //     children: [
+                            for (var item in list.reversed)
+                              getFeed(context, item["email"], item["post"]),
+                            //     ]
+                            //   ),
+                            // ),
+                            // Container(
+                            //   // width: 100,
+                            //   height: 200,
+                            //   decoration: BoxDecoration(
+                            //       color: Colors.white,
+                            //       borderRadius: BorderRadius.circular(10)),
+                            // ),
+                          ],
+                        ),
+                      ),
+                    );
+
+                  }),
             )
-          ],
+            )],
         ),
       ),
     );
   }
+
 }
