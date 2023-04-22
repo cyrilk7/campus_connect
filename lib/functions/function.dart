@@ -7,12 +7,12 @@ import 'package:provider/provider.dart';
 
 import 'package:campus_connect/pages/feed.dart';
 import 'package:campus_connect/pages/view_profile.dart' as view;
+import 'package:quickalert/quickalert.dart';
 import '../pages/login.dart';
 import '../pages/view_profile.dart';
 import '../providers/provider.dart';
+
 final TextEditingController post = TextEditingController();
-
-
 
 Future<void> SignUp(BuildContext context, data) async {
   var url = Uri.http("127.0.0.1:5000", "/profile");
@@ -26,10 +26,19 @@ Future<void> SignUp(BuildContext context, data) async {
   if (request.statusCode == 201) {
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => const LoginPage()));
+    QuickAlert.show(
+      context: context,
+      type: QuickAlertType.success,
+      text: 'Sign Up Completed Successfully!',
+    );
   } else {
-    var title = "Error";
     var message = "Sign up was unsuccessful";
-    dialogBox(context, title, message);
+    // dialogBox(context, title, message);
+    QuickAlert.show(
+      context: context,
+      type: QuickAlertType.error,
+      text: message,
+    );
   }
 }
 
@@ -45,15 +54,23 @@ Future<void> makePost(BuildContext context, data) async {
   if (request.statusCode == 201) {
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => const FeedPage()));
-  }
-  else {
-    var title = "Error";
+    QuickAlert.show(
+      context: context,
+      type: QuickAlertType.success,
+      text: 'New Post Created Successfully!',
+    );
+  } else {
     var message = "Post was unsuccessful";
-    dialogBox(context, title, message);
+    // dialogBox(context, title, message);
+    QuickAlert.show(
+      context: context,
+      type: QuickAlertType.error,
+      text: message,
+    );
   }
 }
 
-Future<void> editProfile(BuildContext context, data) async{
+Future<void> editProfile(BuildContext context, data) async {
   var url = Uri.http("127.0.0.1:5000", "/profile");
   var request = await http.patch(
     url,
@@ -63,16 +80,22 @@ Future<void> editProfile(BuildContext context, data) async{
 
   print(request.statusCode);
   if (request.statusCode == 200) {
-    dialogBox(context, "Success", "Profile Updated");
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => const ViewProfilePage()));
-  }
-  else {
-    var title = "Error";
+    // dialogBox(context, "Success", "Profile Updated");
+    QuickAlert.show(
+      context: context,
+      type: QuickAlertType.success,
+      text: 'Profile Edited Successfully!',
+    );
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => const ViewProfilePage()));
+  } else {
     var message = "Post was unsuccessful";
-    dialogBox(context, title, message);
+    QuickAlert.show(
+      context: context,
+      type: QuickAlertType.error,
+      text: message,
+    );
   }
-
 }
 
 void dialogBox(BuildContext context, String title, String message) {
@@ -93,24 +116,28 @@ void dialogBox(BuildContext context, String title, String message) {
       });
 }
 
-Future<Map<String, dynamic>> getDetails(BuildContext context, String email) async{
+Future<Map<String, dynamic>> getDetails(
+    BuildContext context, String email) async {
   var url = Uri.http("127.0.0.1:5000", "/profile", {"email": email});
   var request = await http.get(
-      url,
+    url,
     headers: {'Content-type': 'application/json'},
   );
 
   print(request.statusCode);
   var responseBody = jsonDecode(request.body);
-  if (request.statusCode == 200){
+  if (request.statusCode == 200) {
     return responseBody;
-  }
-  else{
-    dialogBox(context, "Error", "Unexpected event");
+  } else {
+    QuickAlert.show(
+      context: context,
+      type: QuickAlertType.error,
+      text: 'Unexpected event',
+    );
+    // dialogBox(context, "Error", "Unexpected event");
     return {};
   }
 }
-
 
 Future<void> login(BuildContext context, data) async {
   var url = Uri.http("127.0.0.1:5000", "/login");
@@ -124,7 +151,12 @@ Future<void> login(BuildContext context, data) async {
 
   var responseBody = jsonDecode(request.body);
   if (!responseBody["Success"]) {
-    dialogBox(context, "Error", "Incorrect email or password");
+    // dialogBox(context, "Error", "Incorrect email or password");
+    QuickAlert.show(
+      context: context,
+      type: QuickAlertType.error,
+      text: 'Incorrect Email or Password',
+    );
   }
   if (responseBody["Success"]) {
     Provider.of<MyProvider>(context, listen: false).temp_mail =
@@ -149,11 +181,72 @@ Future<void> login(BuildContext context, data) async {
         responseBody["StudentID"];
     Provider.of<MyProvider>(context, listen: false).temp_gender =
         responseBody["Gender"];
+    QuickAlert.show(
+      context: context,
+      type: QuickAlertType.success,
+      text: 'Welcome',
+    );
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => FeedPage()));
   } else {
-    dialogBox(context, "Error", "Incrrect email or password");
+    // dialogBox(context, "Error", "Incrrect email or password");
+    QuickAlert.show(
+      context: context,
+      type: QuickAlertType.error,
+      text: 'Error, Incorrect email or password',
+    );
   }
+}
+
+getFeed(context, name, message) {
+  return Padding(
+    padding: const EdgeInsets.only(bottom: 20),
+    child: Container(
+      // width: 100,
+      height: 200,
+      decoration: BoxDecoration(
+          color: Colors.white, borderRadius: BorderRadius.circular(10)),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            margin: EdgeInsets.only(left: 20, top: 20),
+            child: Row(
+              children: [
+                CircleAvatar(
+                  backgroundImage: AssetImage("images/profile-img.png"),
+                  radius: 20,
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                Text(
+                  name,
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                ),
+                Text(
+                  " made a post",
+                  style: TextStyle(
+                      // fontWeight: FontWeight.w100,
+                      color: Color.fromRGBO(154, 144, 144, 2),
+                      fontSize: 14),
+                ),
+              ],
+            ),
+          ),
+          Container(
+            margin: EdgeInsets.only(left: 20, top: 20),
+            child: Text(
+              message,
+              style: TextStyle(
+                fontSize: 14,
+              ),
+            ),
+          )
+        ],
+      ),
+    ),
+  );
 }
 
 void showEditModal(context) {
@@ -426,84 +519,83 @@ void showCreateModal(context) {
   String email = Provider.of<MyProvider>(context, listen: false).temp_mail;
   showDialog(
       context: context,
-      builder: (BuildContext context)
-  {
-    return Dialog(
-      shape:
-      RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
-      child: Container(
-        constraints: BoxConstraints(maxHeight: 550, maxWidth: 550),
-        child: Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Center(
-                child: Column(
-                  // mAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                        width: 50,
-                        height: 50,
-                        child: Image.asset("images/sign_in_logo.png")),
-                    Text(
-                      "Create A Post",
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 25,
-                          color: Colors.black),
+      builder: (BuildContext context) {
+        return Dialog(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+          child: Container(
+            constraints: BoxConstraints(maxHeight: 550, maxWidth: 550),
+            child: Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Center(
+                    child: Column(
+                      // mAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                            width: 50,
+                            height: 50,
+                            child: Image.asset("images/sign_in_logo.png")),
+                        Text(
+                          "Create A Post",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 25,
+                              color: Colors.black),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              SizedBox(
-                height: 300,
-                // width: 500,
-                child: TextFormField(
-                  controller: post,
-                  keyboardType: TextInputType.multiline,
-                  expands: true,
-                  // minLines: 1,
-                  maxLines: null,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    hintText: "What's on your mind?",
-                    hintStyle: TextStyle(
-                        fontFamily: 'Agane',
-                        fontSize: 14,
-                        color: Colors.black26),
                   ),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(top: 20),
-                child: SizedBox(
-                  height: 40,
-                  width: 150,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      // Perform some action when the button is presse
-                      makePost(context, {
-                        "email": email,
-                        "post": post.text,
-                      });
-                    },
-                    style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  SizedBox(
+                    height: 300,
+                    // width: 500,
+                    child: TextFormField(
+                      controller: post,
+                      keyboardType: TextInputType.multiline,
+                      expands: true,
+                      // minLines: 1,
+                      maxLines: null,
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        hintText: "What's on your mind?",
+                        hintStyle: TextStyle(
+                            fontFamily: 'Agane',
+                            fontSize: 14,
+                            color: Colors.black26),
                       ),
                     ),
-                    child: Text('Post'),
                   ),
-                ),
+                  Padding(
+                    padding: EdgeInsets.only(top: 20),
+                    child: SizedBox(
+                      height: 40,
+                      width: 150,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          // Perform some action when the button is presse
+                          makePost(context, {
+                            "email": email,
+                            "post": post.text,
+                          });
+                        },
+                        style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                        ),
+                        child: Text('Post'),
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
-        ),
-      ),
-    );
-  });
+        );
+      });
 }

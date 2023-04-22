@@ -7,15 +7,15 @@ import 'package:campus_connect/providers/provider.dart';
 import 'package:provider/provider.dart';
 
 import '../functions/function.dart';
-
-
+import 'login.dart';
 
 class FeedPage extends StatelessWidget {
   const FeedPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    String name = Provider.of<MyProvider>(context, listen: false).temp_firstname;
+    String name =
+        Provider.of<MyProvider>(context, listen: false).temp_firstname;
     String email = Provider.of<MyProvider>(context, listen: false).temp_mail;
     String major = Provider.of<MyProvider>(context, listen: false).temp_major;
 
@@ -279,6 +279,16 @@ class FeedPage extends StatelessWidget {
                       height: 20,
                     ),
                     GestureDetector(
+                      onTap: () {
+                        name = "";
+                        email = "";
+                        major = "";
+
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => LoginPage()));
+                      },
                       child: Container(
                         margin: EdgeInsets.only(left: 30),
                         child: Row(
@@ -308,84 +318,41 @@ class FeedPage extends StatelessWidget {
               child: Container(
                 margin: EdgeInsets.only(left: 50, right: 50),
                 color: Color.fromRGBO(37, 150, 190, 255),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      height: 40,
-                    ),
-                    const Text(
-                      "New Activity",
-                      style: TextStyle(
-                          color: Colors.blueAccent,
-                          fontSize: 30,
-                          fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Container(
-                      // width: 100,
-                      height: 200,
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(10)),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            margin: EdgeInsets.only(left: 20, top: 20),
-                            child: Row(
-                              children: const [
-                                CircleAvatar(
-                                  backgroundImage:
-                                      AssetImage("images/profile-img.png"),
-                                  radius: 20,
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Text(
-                                  "Cyril Kujar ",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 14),
-                                ),
-                                Text(
-                                  "made a post",
-                                  style: TextStyle(
-                                      // fontWeight: FontWeight.w100,
-                                      color: Color.fromRGBO(154, 144, 144, 2),
-                                      fontSize: 14),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Container(
-                            margin: EdgeInsets.only(left: 20, top: 20),
-                            child: const Text(
-                              "The development of the profile functionalities should follow the REST architectural style."
-                              "That is, there should be appropriate REST APIs at the backend. The development of the profile functionalities should follow the REST architectural style."
-                              "That is, there should be appropriate REST APIs at the backend ",
-                              style: TextStyle(
-                                fontSize: 14,
-                              ),
-                            ),
-                          )
-                        ],
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        height: 40,
                       ),
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Container(
-                      // width: 100,
-                      height: 200,
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(10)),
-                    ),
-                  ],
+                      const Text(
+                        "New Activity",
+                        style: TextStyle(
+                            color: Colors.blueAccent,
+                            fontSize: 30,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+
+                      // SingleChildScrollView(
+                      //   child: Column(
+                      //     children: [
+                      for (var i = 0; i < 5; i++)
+                        getFeed(context, "ABBY OWUSU", "TESTING"),
+                      //     ]
+                      //   ),
+                      // ),
+                      // Container(
+                      //   // width: 100,
+                      //   height: 200,
+                      //   decoration: BoxDecoration(
+                      //       color: Colors.white,
+                      //       borderRadius: BorderRadius.circular(10)),
+                      // ),
+                    ],
+                  ),
                 ),
               ),
             )

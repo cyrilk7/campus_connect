@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import '../functions/function.dart';
 import '../providers/provider.dart';
 import 'feed.dart';
+import 'login.dart';
 
 // String name = "";
 // String major = "";
@@ -219,6 +220,24 @@ class ViewProfilePage extends StatelessWidget {
                         height: 20,
                       ),
                       GestureDetector(
+                        onTap: (){
+                          firstname = "";
+                          id = "";
+                          lastname = "";
+                          email = "";
+                          major = "";
+                          gender = "";
+                          DOB = "";
+                          yearGroup = "";
+                          residence = "";
+                          favMovie = "";
+                          favFood = "";
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => LoginPage()));
+
+                        },
                         child: Container(
                           margin: EdgeInsets.only(left: 30),
                           child: Row(
@@ -447,9 +466,9 @@ class ViewProfilePage extends StatelessWidget {
                                 userData.then((value) {
                                   c_gender.text = value['Gender'];
                                   c_major.text = value['Major'];
-                                  c_residence.text = value['Campus Residence'];
-                                  c_favoriteFood.text = value['Favorite Food'];
-                                  c_favoriteMovie.text = value['Favorite Movie'];
+                                  c_residence.text = value['CampusResidence'];
+                                  c_favoriteFood.text = value['FavoriteFood'];
+                                  c_favoriteMovie.text = value['FavoriteMovie'];
                                   c_DOB.text = value['DOB'];
                                   c_yearGroup.text = value['YearGroup'];
                                   c_firstname.text = value["Firstname"];
@@ -742,9 +761,9 @@ void showEditModal(context) {
                                 "Major": c_major.text,
                                 "DOB": c_DOB.text,
                                 "Gender": c_gender.text,
-                                "Campus Residence": c_residence.text,
-                                "Favorite Food": c_favoriteFood.text,
-                                // "Favorite Movie": c_favoriteFood.text,
+                                "CampusResidence": c_residence.text,
+                                "FavoriteFood": c_favoriteFood.text,
+                                "FavoriteMovie": c_favoriteFood.text,
                               });
                             },
                             style: ElevatedButton.styleFrom(
