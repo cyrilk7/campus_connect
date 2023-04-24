@@ -75,6 +75,7 @@ class _LoginPageState extends State<LoginPage> {
                           const Text(
                             "Email",
                             style: TextStyle(
+                                // hintText:
                                 fontWeight: FontWeight.bold,
                                 color: Color.fromARGB(109, 0, 0, 0)
                             ),),
@@ -83,10 +84,19 @@ class _LoginPageState extends State<LoginPage> {
                             width: 350,
                             height: 40,
                             child: TextFormField(
+
                               controller: mail,
                               decoration: const InputDecoration(
+                                  hintText: "john.doe@example.com",
+                                  hintStyle: TextStyle(
+                                      fontFamily: 'Agane',
+                                      fontSize: 14,
+                                      color: Colors.black26
+                                  ),
                                   border: OutlineInputBorder()
+
                               ),
+
                             ),
                           )
                         ],
@@ -110,7 +120,13 @@ class _LoginPageState extends State<LoginPage> {
                               obscureText: true,
                               controller: pass,
                               decoration: const InputDecoration(
-                                  border: OutlineInputBorder()
+                                  border: OutlineInputBorder(),
+                                hintText: "***",
+                                hintStyle: TextStyle(
+                                    fontFamily: 'Agane',
+                                    fontSize: 14,
+                                    color: Colors.black26
+                                ),
                               ),
                             ),
                           )

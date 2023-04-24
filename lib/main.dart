@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         home: LandingPage(),
         routes: {
-          '/create-profile': (context) => const LoginPage(),
+          '/create-profile': (context) => const DetailsPage(),
           // '/edit-profile': (context) => const MyEditPage(),
         },
       ),

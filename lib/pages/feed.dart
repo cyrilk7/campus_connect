@@ -10,7 +10,6 @@ import 'package:provider/provider.dart';
 import '../functions/function.dart';
 import 'login.dart';
 
-
 class FeedPage extends StatefulWidget {
   const FeedPage({Key? key}) : super(key: key);
 
@@ -19,17 +18,20 @@ class FeedPage extends StatefulWidget {
 }
 
 class _FeedPageState extends State<FeedPage> {
-  Stream<QuerySnapshot> stream = FirebaseFirestore.instance.collection("Feed").snapshots();
+  Stream<QuerySnapshot> stream =
+      FirebaseFirestore.instance.collection("Feed").snapshots();
   @override
-  void initState(){
+  void initState() {
     super.initState();
     print("feedStream initialized");
   }
 
   @override
   Widget build(BuildContext context) {
-    String name =
+    String firstname =
         Provider.of<MyProvider>(context, listen: false).temp_firstname;
+    String lastname =
+        Provider.of<MyProvider>(context, listen: false).temp_lastname;
     String email = Provider.of<MyProvider>(context, listen: false).temp_mail;
     String major = Provider.of<MyProvider>(context, listen: false).temp_major;
 
@@ -54,7 +56,7 @@ class _FeedPageState extends State<FeedPage> {
               const Text(
                 "Campus Connect",
                 style: TextStyle(
-                  fontWeight: FontWeight.w800,
+                  // fontWeight: FontWeight.w800,
                   fontSize: 20,
                 ),
               ),
@@ -63,11 +65,12 @@ class _FeedPageState extends State<FeedPage> {
                   child: Container(
                     margin: EdgeInsets.only(left: 300),
                     child: Text(
-                      'Hello Buzzer!',
+                      'Hello ' + firstname + "!",
                       style: TextStyle(
-                          fontSize: 20,
-                          color: Colors.white,
-                          fontWeight: FontWeight.w800),
+                        fontSize: 20,
+                        color: Colors.white,
+                        // fontWeight: FontWeight.w800
+                      ),
                     ),
                   ),
                 ),
@@ -86,17 +89,23 @@ class _FeedPageState extends State<FeedPage> {
                 ),
                 width: 300,
                 height: 100,
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.search,
-                      color: Colors.blueAccent,
-                    ),
-                    Text(
-                      "Search",
-                      style: TextStyle(color: Colors.black),
-                    ),
-                  ],
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 15.0),
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.search,
+                        color: Colors.blueAccent,
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Text(
+                        "Search",
+                        style: TextStyle(color: Colors.black),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -109,27 +118,26 @@ class _FeedPageState extends State<FeedPage> {
                 borderRadius: BorderRadius.circular(10.0),
               ),
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   TextButton(
                     onPressed: () {
                       showCreateModal(context);
                     },
+                    style: TextButton.styleFrom(
+                      foregroundColor: Colors.transparent,
+                    ),
                     child: Text(
-                      'Create',
+                      'Post',
                       style: TextStyle(
                         color: Colors.blueAccent,
                         fontSize: 16.0,
-                        fontWeight: FontWeight.bold,
+                        // fontWeight: FontWeight.bold,
                       ),
-                    ),
-                    style: TextButton.styleFrom(
-                      foregroundColor: Colors.transparent,
-                      primary: Colors.transparent,
-                      elevation: 0,
                     ),
                   ),
                   Icon(
-                    Icons.create,
+                    Icons.add,
                     color: Colors.grey[500],
                     size: 20,
                   ),
@@ -154,19 +162,33 @@ class _FeedPageState extends State<FeedPage> {
                       radius: 40,
                     ),
                     SizedBox(
-                      height: 10,
+                      height: 20,
                     ),
-                    Text(
-                      name,
-                      style: TextStyle(
-                        fontFamily: "Agane",
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.blueAccent,
-                      ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          firstname + " ",
+                          style: TextStyle(
+                            fontFamily: "Agane",
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.blueAccent,
+                          ),
+                        ),
+                        Text(
+                          lastname,
+                          style: TextStyle(
+                            fontFamily: "Agane",
+                            fontSize: 20,
+                            // fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ],
                     ),
                     SizedBox(
-                      height: 10,
+                      height: 20,
                     ),
                     Text(
                       major + " Major",
@@ -185,14 +207,14 @@ class _FeedPageState extends State<FeedPage> {
                             Text(
                               "112",
                               style: TextStyle(
-                                  fontSize: 20,
+                                  fontSize: 17,
                                   fontWeight: FontWeight.bold,
                                   color: Colors.blueAccent),
                             ),
                             Text(
                               "Posts",
                               style: TextStyle(
-                                fontSize: 14,
+                                fontSize: 12,
                                 fontWeight: FontWeight.bold,
                                 color: Color.fromRGBO(154, 144, 144, 2),
                               ),
@@ -208,7 +230,7 @@ class _FeedPageState extends State<FeedPage> {
                             Text(
                               "177",
                               style: TextStyle(
-                                fontSize: 20,
+                                fontSize: 17,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.blueAccent,
                               ),
@@ -216,7 +238,7 @@ class _FeedPageState extends State<FeedPage> {
                             Text(
                               "Followers",
                               style: TextStyle(
-                                  fontSize: 14,
+                                  fontSize: 12,
                                   fontWeight: FontWeight.bold,
                                   color: Color.fromRGBO(154, 144, 144, 2)),
                             ),
@@ -333,65 +355,78 @@ class _FeedPageState extends State<FeedPage> {
                 margin: EdgeInsets.only(left: 50, right: 50),
                 color: Color.fromRGBO(37, 150, 190, 255),
                 child: StreamBuilder<QuerySnapshot>(
-                  stream: stream,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasError) {
-                      return Center(
-                          child: Text('Error: ${snapshot.error}')
-                      );
-                    }
-                    if (!snapshot.hasData) {
-                      return const CircularProgressIndicator(
-                        color: Colors.blueAccent,
-                      );
-                    }
-                    final list = snapshot.data!.docs;
+                    stream: stream,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError) {
+                        return Center(child: Text('Error: ${snapshot.error}'));
+                      }
+                      if (!snapshot.hasData) {
+                        return const CircularProgressIndicator(
+                          color: Colors.blueAccent,
+                        );
+                      }
+                      final list = snapshot.data!.docs;
 
-                    return Expanded(
-                      child: SingleChildScrollView(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SizedBox(
-                              height: 40,
-                            ),
-                            const Text(
-                              "New Activity",
-                              style: TextStyle(
-                                  color: Colors.blueAccent,
-                                  fontSize: 30,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            SizedBox(
-                              height: 20,
-                            ),
+                      return Expanded(
+                        child: SingleChildScrollView(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                height: 40,
+                              ),
+                              Row(
+                                children: const [
+                                  Text(
+                                    "New ",
+                                    style: TextStyle(
+                                        color: Colors.blueAccent,
+                                        fontSize: 30,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  Text(
+                                    "Activity",
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 30,
+                                      // fontWeight: FontWeight.bold
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
 
-                            // SingleChildScrollView(
-                            //   child: Column(
-                            //     children: [
-                            for (var item in list.reversed)
-                              getFeed(context, item["email"], item["post"]),
-                            //     ]
-                            //   ),
-                            // ),
-                            // Container(
-                            //   // width: 100,
-                            //   height: 200,
-                            //   decoration: BoxDecoration(
-                            //       color: Colors.white,
-                            //       borderRadius: BorderRadius.circular(10)),
-                            // ),
-                          ],
+                              // SingleChildScrollView(
+                              //   child: Column(
+                              //     children: [
+                              for (var item in list.reversed)
+                                if (email == item['email'])
+                                  getMyFeed(context, item['email'], item['post'], item['timestamp'])
+                                else
+                                getFeed(context, item["email"], item["post"],
+                                    item["timestamp"]),
+                              //     ]
+                              //   ),
+                              // ),
+                              // Container(
+                              //   // width: 100,
+                              //   height: 200,
+                              //   decoration: BoxDecoration(
+                              //       color: Colors.white,
+                              //       borderRadius: BorderRadius.circular(10)),
+                              // ),
+                            ],
+                          ),
                         ),
-                      ),
-                    );
-
-                  }),
-            )
-            )],
+                      );
+                    }),
+              ),
+            ),
+          ],
         ),
       ),
     );
   }
-
 }

@@ -75,6 +75,7 @@ flutter:
     - images/campus_scene.jpg
     - images/campus_scene2.jpg
     - images/profile-img.png
+    - images/bg_scene.jpg
   fonts:
     - family: Agane
       fonts:

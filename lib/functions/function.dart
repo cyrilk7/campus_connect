@@ -6,16 +6,18 @@ import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
 import 'package:campus_connect/pages/feed.dart';
-import 'package:campus_connect/pages/view_profile.dart' as view;
+import 'package:campus_connect/pages/view_others.dart' as others;
+import 'package:campus_connect/pages/view_profile.dart';
 import 'package:quickalert/quickalert.dart';
 import '../pages/login.dart';
+import '../pages/view_others.dart';
 import '../pages/view_profile.dart';
 import '../providers/provider.dart';
 
 final TextEditingController post = TextEditingController();
 
 Future<void> SignUp(BuildContext context, data) async {
-  var url = Uri.http("127.0.0.1:5000", "/profile");
+  var url = Uri.https("elections-b.uc.r.appspot.com", "/profile");
   var request = await http.post(
     url,
     headers: {'Content-Type': 'application/json'},
@@ -43,7 +45,7 @@ Future<void> SignUp(BuildContext context, data) async {
 }
 
 Future<void> makePost(BuildContext context, data) async {
-  var url = Uri.http("127.0.0.1:5000", "/feed");
+  var url = Uri.https("elections-b.uc.r.appspot.com", "/feed");
   var request = await http.post(
     url,
     headers: {'Content-Type': 'application/json'},
@@ -71,7 +73,7 @@ Future<void> makePost(BuildContext context, data) async {
 }
 
 Future<void> editProfile(BuildContext context, data) async {
-  var url = Uri.http("127.0.0.1:5000", "/profile");
+  var url = Uri.https("elections-b.uc.r.appspot.com", "/profile");
   var request = await http.patch(
     url,
     headers: {'Content-Type': 'application/json'},
@@ -118,7 +120,7 @@ void dialogBox(BuildContext context, String title, String message) {
 
 Future<Map<String, dynamic>> getDetails(
     BuildContext context, String email) async {
-  var url = Uri.http("127.0.0.1:5000", "/profile", {"email": email});
+  var url = Uri.https("elections-b.uc.r.appspot.com", "/profile", {"email": email});
   var request = await http.get(
     url,
     headers: {'Content-type': 'application/json'},
@@ -140,7 +142,7 @@ Future<Map<String, dynamic>> getDetails(
 }
 
 Future<void> login(BuildContext context, data) async {
-  var url = Uri.http("127.0.0.1:5000", "/login");
+  var url = Uri.https("elections-b.uc.r.appspot.com", "/login");
   var request = await http.post(
     url,
     headers: {'Content-type': 'application/json'},
@@ -198,7 +200,7 @@ Future<void> login(BuildContext context, data) async {
   }
 }
 
-getFeed(context, name, message) {
+getFeed(context, email, message, time) {
   return Padding(
     padding: const EdgeInsets.only(bottom: 20),
     child: Container(
@@ -210,27 +212,118 @@ getFeed(context, name, message) {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            margin: EdgeInsets.only(left: 20, top: 20),
+            margin: EdgeInsets.only(left: 20, top: 20, right: 20),
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                CircleAvatar(
-                  backgroundImage: AssetImage("images/profile-img.png"),
-                  radius: 20,
-                ),
-                SizedBox(
-                  width: 10,
+                Row(
+                  children: [
+                    CircleAvatar(
+                      backgroundImage: AssetImage("images/profile-img.png"),
+                      radius: 20,
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    GestureDetector(
+                      onTap: (){
+                        Navigator.push(
+                            context, MaterialPageRoute(builder: (context) => ViewOthersPage(email: email,)));
+                      },
+                      child: Text(
+                        email,
+                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                      ),
+                    ),
+                    Text(
+                      " made a post",
+                      style: TextStyle(
+                          // fontWeight: FontWeight.w100,
+                          color: Color.fromRGBO(154, 144, 144, 2),
+                          fontSize: 14),
+                    ),
+                    // SizedBox(width: 200,),
+
+                  ],
                 ),
                 Text(
-                  name,
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
-                ),
-                Text(
-                  " made a post",
+                  time,
                   style: TextStyle(
-                      // fontWeight: FontWeight.w100,
+                    // fontWeight: FontWeight.w100,
                       color: Color.fromRGBO(154, 144, 144, 2),
                       fontSize: 14),
+                )
+              ],
+            ),
+          ),
+          Container(
+            margin: EdgeInsets.only(left: 20, top: 20),
+            child: Text(
+              message,
+              style: TextStyle(
+                fontSize: 14,
+              ),
+            ),
+          )
+        ],
+      ),
+    ),
+  );
+}
+
+getMyFeed(context, email, message, time) {
+  return Padding(
+    padding: const EdgeInsets.only(bottom: 20),
+    child: Container(
+      // width: 100,
+      height: 200,
+      decoration: BoxDecoration(
+          color: Colors.white, borderRadius: BorderRadius.circular(10)),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            margin: EdgeInsets.only(left: 20, top: 20, right: 20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    CircleAvatar(
+                      backgroundImage: AssetImage("images/profile-img.png"),
+                      radius: 20,
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    GestureDetector(
+                      onTap: (){
+                        Navigator.push(
+                            context, MaterialPageRoute(builder: (context) => ViewProfilePage()));
+                      },
+                      child: Text(
+                        email,
+                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                      ),
+                    ),
+                    Text(
+                      " made a post",
+                      style: TextStyle(
+                        // fontWeight: FontWeight.w100,
+                          color: Color.fromRGBO(154, 144, 144, 2),
+                          fontSize: 14),
+                    ),
+                    // SizedBox(width: 200,),
+
+                  ],
                 ),
+                Text(
+                  time,
+                  style: TextStyle(
+                    // fontWeight: FontWeight.w100,
+                      color: Color.fromRGBO(154, 144, 144, 2),
+                      fontSize: 14),
+                )
               ],
             ),
           ),
@@ -538,12 +631,13 @@ void showCreateModal(context) {
                             width: 50,
                             height: 50,
                             child: Image.asset("images/sign_in_logo.png")),
+                        SizedBox(height: 20,),
                         Text(
                           "Create A Post",
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
-                              fontSize: 25,
-                              color: Colors.black),
+                              fontSize: 20,
+                              color: Colors.blue),
                         ),
                       ],
                     ),
@@ -582,6 +676,7 @@ void showCreateModal(context) {
                             "email": email,
                             "post": post.text,
                           });
+                          post.clear();
                         },
                         style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(

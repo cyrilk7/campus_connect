@@ -26,7 +26,7 @@ class SignUpPage extends StatelessWidget {
                       height: 20,
                     ),
                     const Text(
-                      "Welcome to Campus Connect",
+                      "Making Connections Easier",
                       textAlign: TextAlign.left,
                       style: TextStyle(
                         fontSize: 20,
@@ -38,7 +38,7 @@ class SignUpPage extends StatelessWidget {
                       height: 10,
                     ),
                     const Text(
-                      "Let's get you all signed up!",
+                      "Let's get you registered!",
                       textAlign: TextAlign.left,
                       style: TextStyle(
                         fontSize: 17,
@@ -85,6 +85,7 @@ class SignUpPage extends StatelessWidget {
                                             color: Colors.black26
                                         ),
                                       ),
+
                                     ),
                                   ),
                                 ],
@@ -214,7 +215,7 @@ class SignUpPage extends StatelessWidget {
                             // Perform some action when the button is pressed
                             Navigator.push(context, MaterialPageRoute(builder: (context) => DetailsPage()));
                           },
-                          child: Text('Submit'),
+                          child: Text('Proceed'),
                           style:ElevatedButton.styleFrom(
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12),
@@ -231,7 +232,7 @@ class SignUpPage extends StatelessWidget {
                 child: Container(
                   decoration: const BoxDecoration(
                     image: DecorationImage(
-                      image: AssetImage("images/campus_scene2.jpg"),
+                      image: AssetImage("images/bg_scene.jpg"),
                       fit: BoxFit.cover
                     ),
                   ),
