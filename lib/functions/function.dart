@@ -130,16 +130,26 @@ Future<Map<String, dynamic>> getDetails(
   var responseBody = jsonDecode(request.body);
   if (request.statusCode == 200) {
     return responseBody;
-  } else {
+  }
+  if (request.statusCode == 404){
+    QuickAlert.show(
+      context: context,
+      type: QuickAlertType.error,
+      text: 'Error: User Not Found',
+    );
+    return {};
+  }
+  else {
     QuickAlert.show(
       context: context,
       type: QuickAlertType.error,
       text: 'Unexpected event',
     );
-    // dialogBox(context, "Error", "Unexpected event");
     return {};
   }
 }
+
+
 
 Future<void> login(BuildContext context, data) async {
   var url = Uri.https("elections-b.uc.r.appspot.com", "/login");

@@ -1,6 +1,7 @@
 import 'package:campus_connect/pages/register.dart';
 import 'package:campus_connect/pages/sign_up.dart';
 import 'package:campus_connect/pages/view.dart';
+import 'package:campus_connect/pages/view_others.dart';
 import 'package:campus_connect/pages/view_profile.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +11,7 @@ import 'package:provider/provider.dart';
 import '../functions/function.dart';
 import 'login.dart';
 
+TextEditingController search = TextEditingController();
 class FeedPage extends StatefulWidget {
   const FeedPage({Key? key}) : super(key: key);
 
@@ -79,35 +81,48 @@ class _FeedPageState extends State<FeedPage> {
           ),
           actions: [
             Padding(
-              padding: const EdgeInsets.only(
-                  right: 80, top: 10, bottom: 10, left: 10),
-              child: Container(
-                margin: EdgeInsets.only(left: 10),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                width: 300,
-                height: 100,
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 15.0),
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.search,
-                        color: Colors.blueAccent,
+                padding:
+                const EdgeInsets.only(right: 80, top: 10, bottom: 10),
+                child: Container(
+                  width: 300,
+                  height: 100,
+                  child: Center(
+                    child: TextFormField(
+                      controller: search,
+                      decoration: InputDecoration(
+                        filled: true,
+                        fillColor: Colors.grey[200],
+                        contentPadding: EdgeInsets.symmetric(
+                            vertical: 10.0, horizontal: 10.0),
+                        alignLabelWithHint: true,
+                        hintText: 'Search',
+                        hintStyle: const TextStyle(color: Colors.blueAccent),
+                        prefixIcon: Icon(Icons.search,
+                            color: Colors.grey[500], size: 20),
+                        border: OutlineInputBorder(
+                          borderSide: const BorderSide(
+                            color: Colors.blueAccent, // Change the outline color here
+                          ),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
                       ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Text(
-                        "Search",
-                        style: TextStyle(color: Colors.black),
-                      ),
-                    ],
+                      onFieldSubmitted: (value) {
+                        // Send the request here
+                        // print('searching for user');
+                        String email = search.text;
+
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ViewOthersPage(email: email,)),
+
+
+                        );
+                        search.clear();
+                      },
+                    ),
                   ),
                 ),
-              ),
             ),
             Container(
               height: 10.0,
@@ -361,64 +376,64 @@ class _FeedPageState extends State<FeedPage> {
                         return Center(child: Text('Error: ${snapshot.error}'));
                       }
                       if (!snapshot.hasData) {
-                        return const CircularProgressIndicator(
-                          color: Colors.blueAccent,
+                        return Center(
+                          child: const CircularProgressIndicator(
+                            color: Colors.blueAccent,
+                          ),
                         );
                       }
                       final list = snapshot.data!.docs;
 
-                      return Expanded(
-                        child: SingleChildScrollView(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(
-                                height: 40,
-                              ),
-                              Row(
-                                children: const [
-                                  Text(
-                                    "New ",
-                                    style: TextStyle(
-                                        color: Colors.blueAccent,
-                                        fontSize: 30,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  Text(
-                                    "Activity",
-                                    style: TextStyle(
-                                      color: Colors.black,
+                      return SingleChildScrollView(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(
+                              height: 40,
+                            ),
+                            Row(
+                              children: const [
+                                Text(
+                                  "New ",
+                                  style: TextStyle(
+                                      color: Colors.blueAccent,
                                       fontSize: 30,
-                                      // fontWeight: FontWeight.bold
-                                    ),
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                Text(
+                                  "Activity",
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 30,
+                                    // fontWeight: FontWeight.bold
                                   ),
-                                ],
-                              ),
-                              SizedBox(
-                                height: 20,
-                              ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
 
-                              // SingleChildScrollView(
-                              //   child: Column(
-                              //     children: [
-                              for (var item in list.reversed)
-                                if (email == item['email'])
-                                  getMyFeed(context, item['email'], item['post'], item['timestamp'])
-                                else
-                                getFeed(context, item["email"], item["post"],
-                                    item["timestamp"]),
-                              //     ]
-                              //   ),
-                              // ),
-                              // Container(
-                              //   // width: 100,
-                              //   height: 200,
-                              //   decoration: BoxDecoration(
-                              //       color: Colors.white,
-                              //       borderRadius: BorderRadius.circular(10)),
-                              // ),
-                            ],
-                          ),
+                            // SingleChildScrollView(
+                            //   child: Column(
+                            //     children: [
+                            for (var item in list.reversed)
+                              if (email == item['email'])
+                                getMyFeed(context, item['email'], item['post'], item['timestamp'])
+                              else
+                              getFeed(context, item["email"], item["post"],
+                                  item["timestamp"]),
+                            //     ]
+                            //   ),
+                            // ),
+                            // Container(
+                            //   // width: 100,
+                            //   height: 200,
+                            //   decoration: BoxDecoration(
+                            //       color: Colors.white,
+                            //       borderRadius: BorderRadius.circular(10)),
+                            // ),
+                          ],
                         ),
                       );
                     }),

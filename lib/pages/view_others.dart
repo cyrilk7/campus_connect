@@ -1,5 +1,6 @@
 import 'package:campus_connect/pages/sign_up.dart';
 import 'package:campus_connect/pages/view_profile.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -42,11 +43,15 @@ class ViewOthersPage extends StatefulWidget {
 
 
 
+
+
   @override
   State<ViewOthersPage> createState() => _ViewOthersPageState();
 }
 
 class _ViewOthersPageState extends State<ViewOthersPage> {
+  Stream<QuerySnapshot> stream =
+  FirebaseFirestore.instance.collection("Feed").snapshots();
 
   @override
   Widget build(BuildContext context) {
@@ -285,47 +290,43 @@ class _ViewOthersPageState extends State<ViewOthersPage> {
                   ),
                   Expanded(
                     flex: 5,
-                    child: Container(
-                      color: Color.fromRGBO(37, 150, 190, 255),
+                    child: SingleChildScrollView(
                       child: Container(
-                        child: Column(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(left: 50, right: 40, top: 40),
-                              child: Row(
-                                children: [
-                                  Text(
-                                    "User ",
-                                    style: TextStyle(
+                        color: Color.fromRGBO(37, 150, 190, 255),
+                        child: Container(
+                          child: Column(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(left: 70, right: 40, top: 40),
+                                child: Row(
+                                  children: const [
+                                    Text(
+                                      "User ",
+                                      style: TextStyle(
+                                          fontSize: 30,
+                                          color: Colors.blueAccent,
+                                          fontWeight: FontWeight.bold
+                                      ),
+                                    ),
+                                    Text(
+                                      "Profile",
+                                      style: TextStyle(
                                         fontSize: 30,
-                                        color: Colors.blueAccent,
-                                        fontWeight: FontWeight.bold
+                                      ),
                                     ),
-                                  ),
-                                  Text(
-                                    "Profile",
-                                    style: TextStyle(
-                                      fontSize: 30,
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                padding: const EdgeInsets.all(30.0),
+                                decoration: BoxDecoration(
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.blueAccent,
+                                      blurRadius: 100.0,
                                     ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            SizedBox(height: 10,),
-
-                            Container(
-                              padding: const EdgeInsets.all(40.0),
-                              decoration: BoxDecoration(
-                                boxShadow: [
-                                  BoxShadow(
-                                    //<-- SEE HERE
-                                    color: Colors.blueAccent,
-                                    blurRadius: 100.0,
-                                  ),
-                                ],
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(20.0),
+                                  ],
+                                ),
                                 child: Card(
                                   elevation: 50,
                                   shadowColor: Colors.black,
@@ -421,13 +422,16 @@ class _ViewOthersPageState extends State<ViewOthersPage> {
                                           crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                           children: [
-                                            Text(
-                                              DOB,
-                                              style: TextStyle(
-                                                // fontWeight: FontWeight.bold,
-                                                  fontSize: 17,
-                                                  color: Color.fromRGBO(
-                                                      154, 144, 144, 2)),
+                                            Padding(
+                                              padding: const EdgeInsets.only(top:20.0),
+                                              child: Text(
+                                                DOB,
+                                                style: TextStyle(
+                                                  // fontWeight: FontWeight.bold,
+                                                    fontSize: 17,
+                                                    color: Color.fromRGBO(
+                                                        154, 144, 144, 2)),
+                                              ),
                                             ),
                                             SizedBox(
                                               height: 20,
@@ -561,12 +565,80 @@ class _ViewOthersPageState extends State<ViewOthersPage> {
                                   ),
                                 ),
                               ),
-                            ),
-                            // Divider(
-                            //   height: 100,
-                            //   color: Colors.blueAccent,
-                            // ),
-                          ],
+                              // Divider(
+                              //   height: 100,
+                              //   color: Colors.blueAccent,
+                              // ),
+                              Container(
+                                margin: EdgeInsets.all(40),
+                                child: StreamBuilder<QuerySnapshot>(
+                                    stream: stream,
+                                    builder: (context, snapshot) {
+                                      if (snapshot.hasError) {
+                                        return Center(child: Text('Error: ${snapshot.error}'));
+                                      }
+                                      if (!snapshot.hasData) {
+                                        return Center(
+                                          child: const CircularProgressIndicator(
+                                            color: Colors.blueAccent,
+                                          ),
+                                        );
+                                      }
+                                      final list = snapshot.data!.docs;
+
+                                      return Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          SizedBox(
+                                            height: 40,
+                                          ),
+                                          Row(
+                                            children: const [
+                                              Text(
+                                                "Your ",
+                                                style: TextStyle(
+                                                    color: Colors.blueAccent,
+                                                    fontSize: 30,
+                                                    fontWeight: FontWeight.bold),
+                                              ),
+                                              Text(
+                                                "Activity",
+                                                style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 30,
+                                                  // fontWeight: FontWeight.bold
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: 20,
+                                          ),
+
+                                          // SingleChildScrollView(
+                                          //   child: Column(
+                                          //     children: [
+                                          for (var item in list.reversed)
+                                            if (email == item['email'])
+                                              getMyFeed(context, item['email'], item['post'], item['timestamp'])
+                                          // getFeed(context, item["email"], item["post"],
+                                          //     item["timestamp"]),
+                                          //     ]
+                                          //   ),
+                                          // ),
+                                          // Container(
+                                          //   // width: 100,
+                                          //   height: 200,
+                                          //   decoration: BoxDecoration(
+                                          //       color: Colors.white,
+                                          //       borderRadius: BorderRadius.circular(10)),
+                                          // ),
+                                        ],
+                                      );
+                                    }),
+                              )
+                            ],
+                          ),
                         ),
                       ),
                     ),
